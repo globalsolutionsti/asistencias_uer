@@ -1,22 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Registro IEDEP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IEDEP - Registro de Asistencia</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h2>Registro de Asistencia IEDEP</h2>
+<div class="card">
 
-<input id="nombre" placeholder="Nombre">
-<input id="numero" placeholder="Número Empleado">
-<input id="uer" placeholder="UER">
+  <div class="header">
+    <h1>IEDEP</h1>
+    <p>Registro Institucional de Asistencia</p>
+  </div>
 
-<video id="video" autoplay playsinline></video>
-<canvas id="canvas" hidden></canvas>
+  <div id="step1">
+    <label>Número de Empleado</label>
+    <input type="text" id="numero" placeholder="Ingrese su número">
+    <button onclick="validarUbicacion()">Validar Ubicación</button>
+  </div>
 
-<button onclick="registrar()">Registrar</button>
+  <div id="step2" class="hidden">
+    <p class="success">Ubicación validada correctamente</p>
+    <video id="video" autoplay playsinline></video>
+    <button onclick="tomarSelfie()">Tomar Selfie</button>
+    <canvas id="canvas" hidden></canvas>
+  </div>
+
+  <div id="step3" class="hidden">
+    <p class="success">Selfie capturada</p>
+    <button class="registrar" onclick="registrar()">Registrar Asistencia</button>
+  </div>
+
+</div>
 
 <script src="app.js"></script>
 </body>
