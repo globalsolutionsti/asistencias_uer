@@ -138,3 +138,28 @@ function registrar() {
 
   });
 }
+function mostrarModal(tipo, titulo, mensaje) {
+
+  const modal = document.getElementById("modal");
+  const icon = document.getElementById("modalIcon");
+  const title = document.getElementById("modalTitle");
+  const message = document.getElementById("modalMessage");
+
+  modal.classList.remove("hidden");
+  modal.classList.remove("modal-success", "modal-error");
+
+  if (tipo === "success") {
+    modal.classList.add("modal-success");
+    icon.innerHTML = "✔";
+  } else {
+    modal.classList.add("modal-error");
+    icon.innerHTML = "✖";
+  }
+
+  title.innerText = titulo;
+  message.innerText = mensaje;
+}
+
+function cerrarModal() {
+  document.getElementById("modal").classList.add("hidden");
+}
