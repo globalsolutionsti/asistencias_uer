@@ -44,7 +44,11 @@ function validarUbicacion() {
         activarCamara();
 
       } else {
-        alert(data.message);
+        mostrarModal(
+  data.success ? "success" : "error",
+  data.success ? "Operación Exitosa" : "Atención",
+  data.message
+);
       }
 
     });
@@ -132,7 +136,11 @@ function registrar() {
       document.getElementById("step3").classList.remove("hidden");
 
     } else {
-      alert(data.message);
+     mostrarModal(
+  data.success ? "success" : "error",
+  data.success ? "Operación Exitosa" : "Atención",
+  data.message
+);
       location.reload();
     }
 
