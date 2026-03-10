@@ -120,7 +120,7 @@ async function inicializarSeguridad(){
 
 }
 
-inicializarSeguridad();
+window.onload = inicializarSeguridad;
 
 
 
@@ -132,10 +132,11 @@ function validarUbicacion() {
 
   const numero = document.getElementById("numero").value.trim();
 
-  if (!numero) {
-    alert("Ingrese su número de empleado.");
-    return;
-  }
+  mostrarModal(
+  "error",
+  "Información requerida",
+  "Debe ingresar su número de empleado para iniciar el proceso de validación."
+);
 
   navigator.geolocation.getCurrentPosition(position => {
 
