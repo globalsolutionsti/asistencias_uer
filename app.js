@@ -244,7 +244,7 @@ function enviarValidacion(numero){
   fetch(API_URL, {
   method:"POST",
   headers:{
-    "Content-Type":"application/json"
+    "Content-Type":"text/plain"
   },
   body: JSON.stringify({
       accion:"validar",
@@ -410,7 +410,7 @@ function registrar(){
   fetch(API_URL, {
   method:"POST",
   headers:{
-    "Content-Type":"application/json"
+    "Content-Type":"text/plain"
   },
   body: JSON.stringify({
 
