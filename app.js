@@ -409,11 +409,11 @@ function tomarSelfie(stream){
 function registrar(){
 
   fetch(API_URL,{
-
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
+  method:"POST",
+  mode:"no-cors",
+  headers:{
+    "Content-Type":"text/plain"
+  },
     body:JSON.stringify({
 
       accion:"registrar",
