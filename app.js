@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbycu6AMNLPQbGeWojs-mF1eTaNGWrBgTYHKUoo5yjkRYSnXsh_o_FYlEmvfAzghkQ6vBQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxgIV4MVCWRT3USOB4tYTzV02rGx8c48oShJqfiTPhkIONC5uLlo6yZ_19yjpZdsaGOnw/exec";
 
 let deviceId = localStorage.getItem("deviceId");
 let selfieBase64 = null;
@@ -132,16 +132,16 @@ function validarUbicacion() {
 
   const numero = document.getElementById("numero").value.trim();
 
-if (!numero) {
+  if (!numero) {
 
-  mostrarModal(
-    "error",
-    "Información requerida",
-    "Debe ingresar su número de empleado para iniciar el proceso de validación."
-  );
+    mostrarModal(
+      "error",
+      "Información requerida",
+      "Debe ingresar su número de empleado para iniciar el proceso de validación."
+    );
 
-  return;
-}
+    return;
+  }
 
   navigator.geolocation.getCurrentPosition(position => {
 
@@ -161,6 +161,9 @@ if (!numero) {
 
     fetch(API_URL, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         accion: "validar",
         numero: numero,
@@ -294,6 +297,9 @@ function registrar() {
 
   fetch(API_URL, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify({
       accion: "registrar",
       numero: document.getElementById("numero").value.trim(),
@@ -359,8 +365,6 @@ function mostrarModal(tipo,titulo,mensaje){
   message.innerText = mensaje;
 
 }
-
-
 
 function cerrarModal(){
   document.getElementById("modal").classList.add("hidden");
