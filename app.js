@@ -243,11 +243,10 @@ function enviarValidacion(numero){
 
   fetch(API_URL, {
   method:"POST",
-  mode:"no-cors",
   headers:{
-    "Content-Type":"text/plain"
+    "Content-Type":"application/json"
   },
-    body:JSON.stringify({
+  body: JSON.stringify({
       accion:"validar",
       numero:numero,
       lat:currentLat,
@@ -408,13 +407,12 @@ function tomarSelfie(stream){
 
 function registrar(){
 
-  fetch(API_URL,{
+  fetch(API_URL, {
   method:"POST",
-  mode:"no-cors",
   headers:{
-    "Content-Type":"text/plain"
+    "Content-Type":"application/json"
   },
-    body:JSON.stringify({
+  body: JSON.stringify({
 
       accion:"registrar",
       numero:document.getElementById("numero").value.trim(),
