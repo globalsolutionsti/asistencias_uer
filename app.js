@@ -5,10 +5,40 @@ let selfieBase64 = null;
 let currentLat = null;
 let currentLng = null;
 
+
+// ===============================
+// GENERADOR DE FINGERPRINT LIGERO
+// ===============================
+
+function generarFingerprint() {
+
+  const datos = [
+    navigator.userAgent,
+    navigator.language,
+    screen.width,
+    screen.height,
+    new Date().getTimezoneOffset()
+  ].join("|");
+
+  return btoa(datos).replace(/=/g,"");
+}
+
+
+// ===============================
+// GENERADOR DE TOKEN ROBUSTO
+// ===============================
+
 if (!deviceId) {
-  deviceId = crypto.randomUUID();
+
+  const uuid = crypto.randomUUID();
+  const fingerprint = generarFingerprint();
+
+  deviceId = uuid + "_" + fingerprint;
+
   localStorage.setItem("deviceId", deviceId);
 }
+
+
 
 function validarUbicacion() {
 
@@ -45,10 +75,10 @@ function validarUbicacion() {
 
       } else {
         mostrarModal(
-  data.success ? "success" : "error",
-  data.success ? "Operación Exitosa" : "Atención",
-  data.message
-);
+          data.success ? "success" : "error",
+          data.success ? "Operación Exitosa" : "Atención",
+          data.message
+        );
       }
 
     });
@@ -57,6 +87,8 @@ function validarUbicacion() {
     alert("Debe permitir acceso a la ubicación.");
   });
 }
+
+
 
 function activarCamara() {
 
@@ -75,6 +107,8 @@ function activarCamara() {
     alert("Debe permitir acceso a la cámara.");
   });
 }
+
+
 
 function iniciarContador(stream) {
 
@@ -97,6 +131,8 @@ function iniciarContador(stream) {
   }, 1000);
 }
 
+
+
 function tomarSelfie(stream) {
 
   const video = document.getElementById("video");
@@ -113,6 +149,8 @@ function tomarSelfie(stream) {
 
   registrar();
 }
+
+
 
 function registrar() {
 
@@ -136,16 +174,20 @@ function registrar() {
       document.getElementById("step3").classList.remove("hidden");
 
     } else {
-     mostrarModal(
-  data.success ? "success" : "error",
-  data.success ? "Operación Exitosa" : "Atención",
-  data.message
-);
+      mostrarModal(
+        data.success ? "success" : "error",
+        data.success ? "Operación Exitosa" : "Atención",
+        data.message
+      );
+
       location.reload();
     }
 
   });
 }
+
+
+
 function mostrarModal(tipo, titulo, mensaje) {
 
   const modal = document.getElementById("modal");
@@ -167,6 +209,8 @@ function mostrarModal(tipo, titulo, mensaje) {
   title.innerText = titulo;
   message.innerText = mensaje;
 }
+
+
 
 function cerrarModal() {
   document.getElementById("modal").classList.add("hidden");
