@@ -6,9 +6,33 @@ let currentLat = null;
 let currentLng = null;
 
 
-// ===============================
-// GENERADOR DE FINGERPRINT LIGERO
-// ===============================
+// =====================================
+// DETECTOR MODO INCOGNITO
+// =====================================
+
+async function detectarIncognito() {
+
+  return new Promise(resolve => {
+
+    const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+
+    if (!fs) {
+      resolve(false);
+    } else {
+      fs(window.TEMPORARY,100,
+        () => resolve(false),
+        () => resolve(true)
+      );
+    }
+
+  });
+
+}
+
+
+// =====================================
+// GENERAR FINGERPRINT DISPOSITIVO
+// =====================================
 
 function generarFingerprint() {
 
@@ -21,24 +45,88 @@ function generarFingerprint() {
   ].join("|");
 
   return btoa(datos).replace(/=/g,"");
+
 }
 
 
-// ===============================
-// GENERADOR DE TOKEN ROBUSTO
-// ===============================
+// =====================================
+// GENERAR TOKEN ROBUSTO
+// =====================================
 
-if (!deviceId) {
+function generarToken() {
 
   const uuid = crypto.randomUUID();
   const fingerprint = generarFingerprint();
 
-  deviceId = uuid + "_" + fingerprint;
+  return uuid + "_" + fingerprint;
 
-  localStorage.setItem("deviceId", deviceId);
 }
 
 
+// =====================================
+// VALIDAR TOKEN LOCAL
+// =====================================
+
+function validarTokenLocal() {
+
+  if (!deviceId) {
+
+    deviceId = generarToken();
+    localStorage.setItem("deviceId",deviceId);
+
+  }
+
+}
+
+
+// =====================================
+// DETECTOR DE GPS FALSO
+// =====================================
+
+function gpsSospechoso(position){
+
+  const accuracy = position.coords.accuracy;
+
+  if (accuracy > 1000) return true;
+
+  if (position.coords.speed && position.coords.speed > 300) return true;
+
+  return false;
+
+}
+
+
+// =====================================
+// INICIALIZACION SEGURA
+// =====================================
+
+async function inicializarSeguridad(){
+
+  const incognito = await detectarIncognito();
+
+  if (incognito){
+
+    mostrarModal(
+      "error",
+      "Modo de navegación restringido",
+      "Por seguridad institucional, el registro de asistencia no puede realizarse en modo de navegación privada o incógnito. Favor de utilizar el navegador en modo normal."
+    );
+
+    throw new Error("Incognito detectado");
+
+  }
+
+  validarTokenLocal();
+
+}
+
+inicializarSeguridad();
+
+
+
+// =====================================
+// VALIDAR UBICACION
+// =====================================
 
 function validarUbicacion() {
 
@@ -50,6 +138,17 @@ function validarUbicacion() {
   }
 
   navigator.geolocation.getCurrentPosition(position => {
+
+    if (gpsSospechoso(position)) {
+
+      mostrarModal(
+        "error",
+        "Ubicación no confiable",
+        "El sistema detectó una inconsistencia en los datos de geolocalización del dispositivo. Por seguridad institucional no es posible registrar la asistencia."
+      );
+
+      return;
+    }
 
     currentLat = position.coords.latitude;
     currentLng = position.coords.longitude;
@@ -74,21 +173,34 @@ function validarUbicacion() {
         activarCamara();
 
       } else {
+
         mostrarModal(
           data.success ? "success" : "error",
           data.success ? "Operación Exitosa" : "Atención",
           data.message
         );
+
       }
 
     });
 
   }, () => {
-    alert("Debe permitir acceso a la ubicación.");
+
+    mostrarModal(
+      "error",
+      "Permiso de ubicación requerido",
+      "Para realizar el registro de asistencia es necesario habilitar el acceso a la ubicación del dispositivo."
+    );
+
   });
+
 }
 
 
+
+// =====================================
+// ACTIVAR CAMARA
+// =====================================
 
 function activarCamara() {
 
@@ -104,11 +216,22 @@ function activarCamara() {
 
   })
   .catch(() => {
-    alert("Debe permitir acceso a la cámara.");
+
+    mostrarModal(
+      "error",
+      "Acceso a cámara requerido",
+      "El sistema necesita acceso a la cámara para capturar la evidencia fotográfica del registro."
+    );
+
   });
+
 }
 
 
+
+// =====================================
+// CONTADOR SELFIE
+// =====================================
 
 function iniciarContador(stream) {
 
@@ -133,6 +256,10 @@ function iniciarContador(stream) {
 
 
 
+// =====================================
+// TOMAR SELFIE
+// =====================================
+
 function tomarSelfie(stream) {
 
   const video = document.getElementById("video");
@@ -141,16 +268,21 @@ function tomarSelfie(stream) {
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
 
-  canvas.getContext("2d").drawImage(video, 0, 0);
+  canvas.getContext("2d").drawImage(video,0,0);
 
-  selfieBase64 = canvas.toDataURL("image/jpeg", 0.8);
+  selfieBase64 = canvas.toDataURL("image/jpeg",0.8);
 
   stream.getTracks().forEach(track => track.stop());
 
   registrar();
+
 }
 
 
+
+// =====================================
+// REGISTRAR ASISTENCIA
+// =====================================
 
 function registrar() {
 
@@ -174,6 +306,7 @@ function registrar() {
       document.getElementById("step3").classList.remove("hidden");
 
     } else {
+
       mostrarModal(
         data.success ? "success" : "error",
         data.success ? "Operación Exitosa" : "Atención",
@@ -181,14 +314,20 @@ function registrar() {
       );
 
       location.reload();
+
     }
 
   });
+
 }
 
 
 
-function mostrarModal(tipo, titulo, mensaje) {
+// =====================================
+// MODAL CORPORATIVO
+// =====================================
+
+function mostrarModal(tipo,titulo,mensaje){
 
   const modal = document.getElementById("modal");
   const icon = document.getElementById("modalIcon");
@@ -196,22 +335,27 @@ function mostrarModal(tipo, titulo, mensaje) {
   const message = document.getElementById("modalMessage");
 
   modal.classList.remove("hidden");
-  modal.classList.remove("modal-success", "modal-error");
+  modal.classList.remove("modal-success","modal-error");
 
-  if (tipo === "success") {
+  if (tipo === "success"){
+
     modal.classList.add("modal-success");
     icon.innerHTML = "✔";
-  } else {
+
+  }else{
+
     modal.classList.add("modal-error");
     icon.innerHTML = "✖";
+
   }
 
   title.innerText = titulo;
   message.innerText = mensaje;
+
 }
 
 
 
-function cerrarModal() {
+function cerrarModal(){
   document.getElementById("modal").classList.add("hidden");
 }
