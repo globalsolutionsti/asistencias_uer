@@ -6,28 +6,36 @@ let currentLat = null;
 let currentLng = null;
 
 
+
 // =====================================
-// DETECTOR MODO INCOGNITO
+// DETECTOR MODO INCOGNITO (SEGURIDAD)
 // =====================================
 
 async function detectarIncognito() {
 
   return new Promise(resolve => {
 
-    const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+    try {
 
-    if (!fs) {
+      const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+
+      if (!fs) {
+        resolve(false);
+      } else {
+        fs(window.TEMPORARY, 100,
+          () => resolve(false),
+          () => resolve(true)
+        );
+      }
+
+    } catch (e) {
       resolve(false);
-    } else {
-      fs(window.TEMPORARY,100,
-        () => resolve(false),
-        () => resolve(true)
-      );
     }
 
   });
 
 }
+
 
 
 // =====================================
@@ -49,6 +57,7 @@ function generarFingerprint() {
 }
 
 
+
 // =====================================
 // GENERAR TOKEN ROBUSTO
 // =====================================
@@ -63,60 +72,87 @@ function generarToken() {
 }
 
 
+
 // =====================================
 // VALIDAR TOKEN LOCAL
 // =====================================
 
 function validarTokenLocal() {
 
-  if (!deviceId) {
+  try {
+
+    if (!deviceId) {
+
+      deviceId = generarToken();
+      localStorage.setItem("deviceId", deviceId);
+
+    }
+
+  } catch(e) {
 
     deviceId = generarToken();
-    localStorage.setItem("deviceId",deviceId);
 
   }
 
 }
 
 
+
 // =====================================
-// DETECTOR DE GPS FALSO
+// DETECTOR GPS SOSPECHOSO
 // =====================================
 
 function gpsSospechoso(position){
 
-  const accuracy = position.coords.accuracy;
+  try {
 
-  if (accuracy > 1000) return true;
+    const accuracy = position.coords.accuracy;
 
-  if (position.coords.speed && position.coords.speed > 300) return true;
+    if (accuracy > 1000) return true;
 
-  return false;
+    if (position.coords.speed && position.coords.speed > 300) return true;
+
+    return false;
+
+  } catch(e) {
+
+    return false;
+
+  }
 
 }
 
 
+
 // =====================================
-// INICIALIZACION SEGURA
+// INICIALIZACION SEGURA DEL SISTEMA
 // =====================================
 
 async function inicializarSeguridad(){
 
-  const incognito = await detectarIncognito();
+  try {
 
-  if (incognito){
+    const incognito = await detectarIncognito();
 
-    mostrarModal(
-      "error",
-      "Modo de navegación restringido",
-      "Por seguridad institucional, el registro de asistencia no puede realizarse en modo de navegación privada o incógnito. Favor de utilizar el navegador en modo normal."
-    );
+    if (incognito){
 
-    throw new Error("Incognito detectado");
+      mostrarModal(
+        "error",
+        "Modo de navegación restringido",
+        "Por seguridad institucional, el registro de asistencia no puede realizarse en modo de navegación privada o incógnito. Favor de utilizar el navegador en modo normal."
+      );
+
+      return;
+
+    }
+
+    validarTokenLocal();
+
+  } catch(e) {
+
+    validarTokenLocal();
 
   }
-
-  validarTokenLocal();
 
 }
 
@@ -143,62 +179,108 @@ function validarUbicacion() {
     return;
   }
 
-  navigator.geolocation.getCurrentPosition(position => {
-
-    if (gpsSospechoso(position)) {
-
-      mostrarModal(
-        "error",
-        "Ubicación no confiable",
-        "El sistema detectó una inconsistencia en los datos de geolocalización del dispositivo. Por seguridad institucional no es posible registrar la asistencia."
-      );
-
-      return;
-    }
-
-    currentLat = position.coords.latitude;
-    currentLng = position.coords.longitude;
-
-    fetch(API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        accion: "validar",
-        numero: numero,
-        lat: currentLat,
-        lng: currentLng
-      })
-    })
-    .then(res => res.json())
-    .then(data => {
-
-      if (data.success) {
-
-        document.getElementById("step1").classList.add("hidden");
-        document.getElementById("step2").classList.remove("hidden");
-
-        activarCamara();
-
-      } else {
-
-        mostrarModal(
-          data.success ? "success" : "error",
-          data.success ? "Operación Exitosa" : "Atención",
-          data.message
-        );
-
-      }
-
-    });
-
-  }, () => {
+  if (!navigator.geolocation) {
 
     mostrarModal(
       "error",
-      "Permiso de ubicación requerido",
-      "Para realizar el registro de asistencia es necesario habilitar el acceso a la ubicación del dispositivo."
+      "GPS no disponible",
+      "El dispositivo no permite obtener la ubicación necesaria para el registro."
+    );
+
+    return;
+
+  }
+
+  navigator.geolocation.getCurrentPosition(
+
+    function(position){
+
+      if (gpsSospechoso(position)) {
+
+        mostrarModal(
+          "error",
+          "Ubicación no confiable",
+          "El sistema detectó inconsistencias en la geolocalización del dispositivo."
+        );
+
+        return;
+      }
+
+      currentLat = position.coords.latitude;
+      currentLng = position.coords.longitude;
+
+      enviarValidacion(numero);
+
+    },
+
+    function(){
+
+      mostrarModal(
+        "error",
+        "Permiso de ubicación requerido",
+        "Para registrar asistencia debe permitir acceso a la ubicación del dispositivo."
+      );
+
+    },
+
+    {
+      enableHighAccuracy:true,
+      timeout:15000,
+      maximumAge:0
+    }
+
+  );
+
+}
+
+
+
+// =====================================
+// VALIDAR UBICACION CON SERVIDOR
+// =====================================
+
+function enviarValidacion(numero){
+
+  fetch(API_URL, {
+
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+      accion:"validar",
+      numero:numero,
+      lat:currentLat,
+      lng:currentLng
+    })
+
+  })
+
+  .then(res => res.json())
+
+  .then(data => {
+
+    if(data.success){
+
+      document.getElementById("step1").classList.add("hidden");
+      document.getElementById("step2").classList.remove("hidden");
+
+      activarCamara();
+
+    } else {
+
+      mostrarModal("error","Validación no autorizada",data.message);
+
+    }
+
+  })
+
+  .catch(()=>{
+
+    mostrarModal(
+      "error",
+      "Error de comunicación",
+      "No fue posible establecer comunicación con el servidor institucional."
     );
 
   });
@@ -213,23 +295,37 @@ function validarUbicacion() {
 
 function activarCamara() {
 
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+
+    mostrarModal(
+      "error",
+      "Cámara no disponible",
+      "El dispositivo no permite acceder a la cámara."
+    );
+
+    return;
+  }
+
   navigator.mediaDevices.getUserMedia({
-    video: { facingMode: "user" }
+    video:{facingMode:"user"}
   })
+
   .then(stream => {
 
     const video = document.getElementById("video");
+
     video.srcObject = stream;
 
     iniciarContador(stream);
 
   })
-  .catch(() => {
+
+  .catch(()=>{
 
     mostrarModal(
       "error",
       "Acceso a cámara requerido",
-      "El sistema necesita acceso a la cámara para capturar la evidencia fotográfica del registro."
+      "Debe permitir acceso a la cámara para capturar la evidencia fotográfica."
     );
 
   });
@@ -242,25 +338,30 @@ function activarCamara() {
 // CONTADOR SELFIE
 // =====================================
 
-function iniciarContador(stream) {
+function iniciarContador(stream){
 
   let tiempo = 3;
-  const contador = document.getElementById("contador");
-  contador.innerText = "Tomando selfie en " + tiempo;
 
-  const interval = setInterval(() => {
+  const contador = document.getElementById("contador");
+
+  contador.innerText = "Capturando evidencia en " + tiempo;
+
+  const interval = setInterval(()=>{
 
     tiempo--;
-    contador.innerText = "Tomando selfie en " + tiempo;
 
-    if (tiempo === 0) {
+    contador.innerText = "Capturando evidencia en " + tiempo;
+
+    if(tiempo === 0){
 
       clearInterval(interval);
+
       tomarSelfie(stream);
 
     }
 
-  }, 1000);
+  },1000);
+
 }
 
 
@@ -269,21 +370,33 @@ function iniciarContador(stream) {
 // TOMAR SELFIE
 // =====================================
 
-function tomarSelfie(stream) {
+function tomarSelfie(stream){
 
-  const video = document.getElementById("video");
-  const canvas = document.getElementById("canvas");
+  try{
 
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
 
-  canvas.getContext("2d").drawImage(video,0,0);
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
 
-  selfieBase64 = canvas.toDataURL("image/jpeg",0.8);
+    canvas.getContext("2d").drawImage(video,0,0);
 
-  stream.getTracks().forEach(track => track.stop());
+    selfieBase64 = canvas.toDataURL("image/jpeg",0.8);
 
-  registrar();
+    stream.getTracks().forEach(track => track.stop());
+
+    registrar();
+
+  }catch(e){
+
+    mostrarModal(
+      "error",
+      "Error en captura",
+      "No fue posible capturar la evidencia fotográfica."
+    );
+
+  }
 
 }
 
@@ -293,41 +406,55 @@ function tomarSelfie(stream) {
 // REGISTRAR ASISTENCIA
 // =====================================
 
-function registrar() {
+function registrar(){
 
-  fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
+  fetch(API_URL,{
+
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
     },
-    body: JSON.stringify({
-      accion: "registrar",
-      numero: document.getElementById("numero").value.trim(),
-      lat: currentLat,
-      lng: currentLng,
-      deviceId: deviceId,
-      selfie: selfieBase64
-    })
-  })
-  .then(res => res.json())
-  .then(data => {
+    body:JSON.stringify({
 
-    if (data.success) {
+      accion:"registrar",
+      numero:document.getElementById("numero").value.trim(),
+      lat:currentLat,
+      lng:currentLng,
+      deviceId:deviceId,
+      selfie:selfieBase64
+
+    })
+
+  })
+
+  .then(res=>res.json())
+
+  .then(data=>{
+
+    if(data.success){
 
       document.getElementById("step2").classList.add("hidden");
       document.getElementById("step3").classList.remove("hidden");
 
-    } else {
+    }else{
 
-      mostrarModal(
-        data.success ? "success" : "error",
-        data.success ? "Operación Exitosa" : "Atención",
-        data.message
-      );
+      mostrarModal("error","Registro no autorizado",data.message);
 
-      location.reload();
+      setTimeout(()=>{
+        location.reload();
+      },3000);
 
     }
+
+  })
+
+  .catch(()=>{
+
+    mostrarModal(
+      "error",
+      "Error de comunicación",
+      "No fue posible completar el registro en el sistema institucional."
+    );
 
   });
 
@@ -349,23 +476,27 @@ function mostrarModal(tipo,titulo,mensaje){
   modal.classList.remove("hidden");
   modal.classList.remove("modal-success","modal-error");
 
-  if (tipo === "success"){
+  if(tipo === "success"){
 
     modal.classList.add("modal-success");
-    icon.innerHTML = "✔";
+    icon.innerHTML="✔";
 
   }else{
 
     modal.classList.add("modal-error");
-    icon.innerHTML = "✖";
+    icon.innerHTML="✖";
 
   }
 
-  title.innerText = titulo;
-  message.innerText = mensaje;
+  title.innerText=titulo;
+  message.innerText=mensaje;
 
 }
 
+
+
 function cerrarModal(){
+
   document.getElementById("modal").classList.add("hidden");
+
 }
