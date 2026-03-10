@@ -132,11 +132,16 @@ function validarUbicacion() {
 
   const numero = document.getElementById("numero").value.trim();
 
+if (!numero) {
+
   mostrarModal(
-  "error",
-  "Información requerida",
-  "Debe ingresar su número de empleado para iniciar el proceso de validación."
-);
+    "error",
+    "Información requerida",
+    "Debe ingresar su número de empleado para iniciar el proceso de validación."
+  );
+
+  return;
+}
 
   navigator.geolocation.getCurrentPosition(position => {
 
