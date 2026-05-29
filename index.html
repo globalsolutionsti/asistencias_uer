@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IEDEP - Registro de Asistencia</title>
+  <title>IEDEP - Registro de Asistencias</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,13 +15,13 @@
   </div>
 
   <div id="step1">
-    <label>Número de Empleado</label>
+    <label>Número de Expediente</label>
     <input type="text" id="numero" placeholder="Ingrese su número">
     <button onclick="validarUbicacion()">Validar Ubicación</button>
   </div>
 
   <div id="step2" class="hidden">
-    <p class="success">Ubicación validada correctamente</p>
+    <p class="success">Ubicación de UER validada correctamente</p>
     <p id="contador" style="text-align:center;font-weight:bold;"></p>
     <video id="video" autoplay playsinline></video>
     <canvas id="canvas" hidden></canvas>
