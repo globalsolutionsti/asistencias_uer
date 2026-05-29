@@ -171,7 +171,7 @@ function validarUbicacion() {
   if (!numero) {
 
     mostrarModal(
-      "error",
+      "ERROR",
       "Información requerida",
       "Debe ingresar su número de empleado para iniciar el proceso de validación."
     );
@@ -182,7 +182,7 @@ function validarUbicacion() {
   if (!navigator.geolocation) {
 
     mostrarModal(
-      "error",
+      "ERROR",
       "GPS no disponible",
       "El dispositivo no permite obtener la ubicación necesaria para el registro."
     );
@@ -198,7 +198,7 @@ function validarUbicacion() {
       if (gpsSospechoso(position)) {
 
         mostrarModal(
-          "error",
+          "ERROR",
           "Ubicación no confiable",
           "El sistema detectó inconsistencias en la geolocalización del dispositivo."
         );
@@ -216,7 +216,7 @@ function validarUbicacion() {
     function(){
 
       mostrarModal(
-        "error",
+        "ERROR",
         "Permiso de ubicación requerido",
         "Para registrar asistencia debe permitir acceso a la ubicación del dispositivo."
       );
@@ -277,7 +277,7 @@ function enviarValidacion(numero){
   .catch(()=>{
 
     mostrarModal(
-      "error",
+      "ERROR",
       "Error de comunicación",
       "No fue posible establecer comunicación con el servidor institucional."
     );
@@ -297,7 +297,7 @@ function activarCamara() {
   if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
 
     mostrarModal(
-      "error",
+      "ERROR",
       "Cámara no disponible",
       "El dispositivo no permite acceder a la cámara."
     );
@@ -322,7 +322,7 @@ function activarCamara() {
   .catch(()=>{
 
     mostrarModal(
-      "error",
+      "ERROR",
       "Acceso a cámara requerido",
       "Debe permitir acceso a la cámara para capturar la evidencia fotográfica."
     );
@@ -349,7 +349,7 @@ function iniciarContador(stream){
 
     tiempo--;
 
-    contador.innerText = "Capturando evidencia en " + tiempo;
+    contador.innerText = "Capturando evidencia de Asistencia en... " + tiempo;
 
     if(tiempo === 0){
 
@@ -390,7 +390,7 @@ function tomarSelfie(stream){
   }catch(e){
 
     mostrarModal(
-      "error",
+      "ERROR",
       "Error en captura",
       "No fue posible capturar la evidencia fotográfica."
     );
@@ -436,7 +436,7 @@ function registrar(){
 
     }else{
 
-      mostrarModal("error","Registro no autorizado",data.message);
+      mostrarModal("ERROR","Registro no autorizado",data.message);
 
       setTimeout(()=>{
         location.reload();
@@ -449,7 +449,7 @@ function registrar(){
   .catch(()=>{
 
     mostrarModal(
-      "error",
+      "ERROR",
       "Error de comunicación",
       "No fue posible completar el registro en el sistema institucional."
     );
