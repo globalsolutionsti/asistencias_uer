@@ -505,3 +505,30 @@ function cerrarModal(){
   document.getElementById("modal").classList.add("hidden");
 
 }
+
+
+function mostrarLoading(){
+
+  document
+    .getElementById("loading")
+    .classList
+    .remove("hidden");
+
+  document
+    .getElementById("btnValidar")
+    .disabled = true;
+
+}
+
+function ocultarLoading(){
+
+  document
+    .getElementById("loading")
+    .classList
+    .add("hidden");
+
+  document
+    .getElementById("btnValidar")
+    .disabled = false;
+
+}
