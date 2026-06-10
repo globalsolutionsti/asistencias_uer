@@ -1,67 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IEDEP - Registro de Asistencias</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IEDEP | Registro Institucional de Asistencia</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
+
+<div class="container">
 
 <div class="card">
 
-  <div class="header">
-    <h1>IEDEP</h1>
-    <p>Registro Institucional de Asistencia</p>
-  </div>
+    <div class="header">
 
-  <div id="step1">
-    <label>Número de Expediente</label>
-    <input type="text" id="numero" placeholder="Ingrese su número">
-    <button id="btnValidar" onclick="validarUbicacion()">
-  Validar Ubicación
-</button>
-    <div id="loading" class="loading hidden">
-  <div class="spinner"></div>
-  <p>Validando ubicación...</p>
+        <img src="logo.png" alt="IEDEP" class="logo-ieped">
+
+        <h2>Registro Institucional de Asistencia</h2>
+
+        <p class="subtitulo">
+            Instituto de Educación Digital del Estado de Puebla
+        </p>
+
+    </div>
+
+    <!-- PASO 1 -->
+
+    <div id="step1">
+
+        <label>Número de Expediente</label>
+
+        <input
+            type="text"
+            id="numero"
+            placeholder="Ingrese su número de expediente">
+
+        <button id="btnValidar" onclick="validarUbicacion()">
+            Validar Ubicación
+        </button>
+
+        <div id="loading" class="loading hidden">
+
+            <div class="spinner"></div>
+
+            <p>Validando ubicación...</p>
+
+        </div>
+
+    </div>
+
+    <!-- PASO 2 -->
+
+    <div id="step2" class="hidden">
+
+        <p class="success">
+            Ubicación institucional validada correctamente
+        </p>
+
+        <div id="empleadoInfo" class="empleado-info">
+
+            <h3 id="nombreEmpleado"></h3>
+
+            <p id="uerEmpleado"></p>
+
+        </div>
+
+        <p id="contador" class="contador"></p>
+
+        <video id="video" autoplay playsinline></video>
+
+        <canvas id="canvas" hidden></canvas>
+
+    </div>
+
+    <!-- PASO 3 -->
+
+    <div id="step3" class="hidden">
+
+        <div class="success-card">
+
+            <div class="success-icon">✓</div>
+
+            <h3>Asistencia Registrada</h3>
+
+            <p>
+                El registro fue realizado exitosamente.
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
-  </div>
 
-  <div id="step2" class="hidden">
+<div class="footer-ieped">
 
-  <p class="success">
-    Ubicación de UER validada correctamente
-  </p>
-
-  <div id="empleadoInfo" class="empleado-info">
-
-    <h3 id="nombreEmpleado"></h3>
-
-    <p id="uerEmpleado"></p>
-
-  </div>
-
-  <p id="contador" style="text-align:center;font-weight:bold;"></p>
-
-  <video id="video" autoplay playsinline></video>
-
-  <canvas id="canvas" hidden></canvas>
+    Gobierno del Estado de Puebla · IEDEP
 
 </div>
-
-  <div id="step3" class="hidden">
-    <p class="success">Asistencia registrada correctamente</p>
-  </div>
 
 </div>
 
 <script src="app.js"></script>
-  <div id="modal" class="modal hidden">
-  <div class="modal-content">
-    <div id="modalIcon" class="modal-icon"></div>
-    <h2 id="modalTitle"></h2>
-    <p id="modalMessage"></p>
-    <button onclick="cerrarModal()">Aceptar</button>
-  </div>
+
+<!-- MODAL -->
+
+<div id="modal" class="modal hidden">
+
+    <div class="modal-content">
+
+        <div id="modalIcon" class="modal-icon"></div>
+
+        <h2 id="modalTitle"></h2>
+
+        <p id="modalMessage"></p>
+
+        <button onclick="cerrarModal()">
+            Aceptar
+        </button>
+
+    </div>
+
 </div>
+
 </body>
 </html>
