@@ -139,16 +139,17 @@ async function inicializarSeguridad(){
       mostrarModal(
         "ERROR",
         "Modo de navegación restringido",
-        "Por seguridad institucional, el registro de asistencia no puede realizarse en modo de navegación privada o incógnito. Favor de utilizar el navegador en modo normal."
+        "Por seguridad institucional..."
       );
 
       return;
-
     }
 
     validarTokenLocal();
 
   } catch(e) {
+
+    console.error(e);
 
     validarTokenLocal();
 
