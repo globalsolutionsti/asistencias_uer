@@ -195,16 +195,18 @@ mostrarLoading();
 
     function(position){
 
-      if (gpsSospechoso(position)) {
+     if (gpsSospechoso(position)) {
 
-        mostrarModal(
-          "ERROR",
-          "Ubicación no confiable",
-          "El sistema detectó inconsistencias en la geolocalización del dispositivo."
-        );
+    ocultarLoading();
 
-        return;
-      }
+    mostrarModal(
+      "ERROR",
+      "Ubicación no confiable",
+      "El sistema detectó inconsistencias en la geolocalización del dispositivo."
+    );
+
+    return;
+}
 
       currentLat = position.coords.latitude;
       currentLng = position.coords.longitude;
@@ -257,31 +259,41 @@ function enviarValidacion(numero){
 
   .then(res => res.json())
 
-  .then(data => {
+.then(data => {
+
+    ocultarLoading();
 
     if(data.success){
-ocultarLoading();
-  document.getElementById("nombreEmpleado").innerText =
-    data.nombre || "";
 
-  document.getElementById("uerEmpleado").innerText =
-    "UER: " + (data.uer || "");
+      document.getElementById("nombreEmpleado").innerText =
+        data.nombre || "";
 
-  document.getElementById("step1").classList.add("hidden");
+      document.getElementById("uerEmpleado").innerText =
+        "UER: " + (data.uer || "");
 
-  document.getElementById("step2").classList.remove("hidden");
+      document.getElementById("step1").classList.add("hidden");
 
-  activarCamara();
+      document.getElementById("step2").classList.remove("hidden");
 
-} else {
+      activarCamara();
 
-      mostrarModal("error","Validación no autorizada",data.message);
+    } else {
+
+      mostrarModal(
+        "ERROR",
+        "Validación no autorizada",
+        data.message
+      );
 
     }
 
-  })
+})
 
-  .catch(()=>{
+.catch((error)=>{
+
+    console.error(error);
+
+    ocultarLoading();
 
     mostrarModal(
       "ERROR",
@@ -289,7 +301,7 @@ ocultarLoading();
       "No fue posible establecer comunicación con el servidor institucional."
     );
 
-  });
+});
 
 }
 
