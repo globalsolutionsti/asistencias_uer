@@ -260,7 +260,7 @@ function enviarValidacion(numero){
   .then(data => {
 
     if(data.success){
-
+ocultarLoading();
   document.getElementById("nombreEmpleado").innerText =
     data.nombre || "";
 
@@ -442,7 +442,7 @@ function registrar(){
       document.getElementById("step3").classList.remove("hidden");
 
     }else{
-
+ocultarLoading();
       mostrarModal("ERROR","Registro no autorizado",data.message);
 
       setTimeout(()=>{
@@ -454,7 +454,7 @@ function registrar(){
   })
 
   .catch(()=>{
-
+ocultarLoading();
     mostrarModal(
       "ERROR",
       "Error de comunicación",
