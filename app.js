@@ -157,7 +157,7 @@ async function inicializarSeguridad(){
 
 }
 
-window.onload = inicializarSeguridad;
+// window.onload = inicializarSeguridad;
 
 
 
