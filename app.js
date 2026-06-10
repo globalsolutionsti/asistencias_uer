@@ -261,12 +261,19 @@ function enviarValidacion(numero){
 
     if(data.success){
 
-      document.getElementById("step1").classList.add("hidden");
-      document.getElementById("step2").classList.remove("hidden");
+  document.getElementById("nombreEmpleado").innerText =
+    data.nombre || "";
 
-      activarCamara();
+  document.getElementById("uerEmpleado").innerText =
+    "UER: " + (data.uer || "");
 
-    } else {
+  document.getElementById("step1").classList.add("hidden");
+
+  document.getElementById("step2").classList.remove("hidden");
+
+  activarCamara();
+
+} else {
 
       mostrarModal("error","Validación no autorizada",data.message);
 
