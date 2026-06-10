@@ -190,7 +190,7 @@ function validarUbicacion() {
     return;
 
   }
-
+mostrarLoading();
   navigator.geolocation.getCurrentPosition(
 
     function(position){
@@ -214,7 +214,7 @@ function validarUbicacion() {
     },
 
     function(){
-
+       ocultarLoading();    
       mostrarModal(
         "ERROR",
         "Permiso de ubicación requerido",
