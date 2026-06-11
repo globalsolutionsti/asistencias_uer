@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbz0_QfcOdD9-YCsJenSy9ncutycqRyYtf9lm28Es6D5FtIJi7-2KjHjMgPB1G55cjPBRA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzH4Ac9uvfjquCTuTbR0v25t4baAP_R2CP4sK7l8x2OqvOikOQ5zZH0iYC3drSMUGQ7aw/exec";
 
 let deviceId = localStorage.getItem("deviceId");
 let selfieBase64 = null;
@@ -449,12 +449,16 @@ function registrar(){
 
   .then(data=>{
 
-    if(data.success){
+   if(data.success){
 
-      document.getElementById("step2").classList.add("hidden");
-      document.getElementById("step3").classList.remove("hidden");
+  document.getElementById("step2").classList.add("hidden");
 
-    }else{
+  document.getElementById("step3").classList.remove("hidden");
+
+  document.getElementById("tipoRegistroTexto").innerText =
+      data.tipoRegistro;
+
+}else{
 ocultarLoading();
       mostrarModal("ERROR","Registro no autorizado",data.message);
 
