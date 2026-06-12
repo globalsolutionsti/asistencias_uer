@@ -156,6 +156,14 @@ empleado.value;
 const nombre =
 texto.split(" - ")[1];
 
+const uer =
+document
+.getElementById(
+"uerEmpleado"
+)
+.innerText
+.replace("UER: ","");
+
 fetch(API_URL,{
 
 method:"POST",
@@ -175,17 +183,28 @@ numero,
 nombre:
 nombre,
 
+uer:
+uer,
+
 fecha:
-document.getElementById("fecha").value,
+document.getElementById(
+"fecha"
+).value,
 
 hora:
-document.getElementById("hora").value,
+document.getElementById(
+"hora"
+).value,
 
 tipo:
-document.getElementById("tipo").value,
+document.getElementById(
+"tipo"
+).value,
 
 motivo:
-document.getElementById("motivo").value,
+document.getElementById(
+"motivo"
+).value,
 
 evidencia:
 evidenciaBase64,
@@ -193,15 +212,6 @@ evidenciaBase64,
 usuarioRH:
 localStorage.getItem(
 "usuarioRH"
-
-uer:
-document
-.getElementById(
-"uerEmpleado"
-)
-.innerText
-.replace("UER: ",""),
-    
 )
 
 })
@@ -214,6 +224,22 @@ document
 
 alert(
 data.message
+);
+
+if(data.success){
+
+location.reload();
+
+}
+
+})
+
+.catch(error=>{
+
+console.error(error);
+
+alert(
+"Error al guardar la asistencia."
 );
 
 });
