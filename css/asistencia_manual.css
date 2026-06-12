@@ -184,3 +184,36 @@ button:hover{
         transform:rotate(360deg);
     }
 }
+
+.empleado-info{
+
+    margin-top:15px;
+
+    padding:15px;
+
+    border-radius:12px;
+
+    background:#FAF8F6;
+
+    border:1px solid #E8DCCF;
+
+    text-align:center;
+}
+
+.empleado-info h3{
+
+    margin:0;
+
+    color:#5F1B2D;
+
+    font-size:20px;
+}
+
+.empleado-info p{
+
+    margin-top:8px;
+
+    color:#CD975D;
+
+    font-weight:700;
+}
