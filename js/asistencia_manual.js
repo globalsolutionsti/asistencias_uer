@@ -252,3 +252,61 @@ alert(
 });
 
 }
+
+function mostrarModal(titulo,mensaje){
+
+document
+.getElementById(
+"modalTitulo"
+).innerText = titulo;
+
+document
+.getElementById(
+"modalMensaje"
+).innerText = mensaje;
+
+document
+.getElementById(
+"modalOverlay"
+)
+.classList.remove(
+"hidden"
+);
+
+}
+
+function cerrarModal(){
+
+document
+.getElementById(
+"modalOverlay"
+)
+.classList.add(
+"hidden"
+);
+
+}
+
+function mostrarSpinner(){
+
+document
+.getElementById(
+"spinnerOverlay"
+)
+.classList.remove(
+"hidden"
+);
+
+}
+
+function ocultarSpinner(){
+
+document
+.getElementById(
+"spinnerOverlay"
+)
+.classList.add(
+"hidden"
+);
+
+}
