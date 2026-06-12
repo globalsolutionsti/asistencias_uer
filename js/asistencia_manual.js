@@ -170,9 +170,11 @@ document
 )
 .innerText
 .replace("UER: ","");
-
+    
+ mostrarSpinner();
+    
 fetch(API_URL,{
-mostrarSpinner();
+    
 method:"POST",
 
 headers:{
