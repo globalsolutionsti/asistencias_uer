@@ -44,7 +44,7 @@ accion:"obtenerEmpleados"
 .then(r=>r.json())
 
 .then(data=>{
-
+console.log(data);
 const combo =
 document.getElementById(
 "empleado"
