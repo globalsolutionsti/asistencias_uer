@@ -7,12 +7,19 @@ window.onload = () => {
 
     cargarEmpleados();
 
-    document
-    .getElementById("evidencia")
-    .addEventListener(
-        "change",
-        previewImagen
+    const evidencia =
+    document.getElementById(
+        "evidencia"
     );
+
+    if(evidencia){
+
+        evidencia.addEventListener(
+            "change",
+            previewImagen
+        );
+
+    }
 
 };
 
