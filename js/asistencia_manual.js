@@ -233,18 +233,18 @@ localStorage.getItem(
 
 ocultarSpinner();
 
+if(data.success){
+
+recargarPagina = true;
+
+}
+
 mostrarModal(
 data.success
 ? "Registro exitoso"
 : "Error",
 data.message
 );
-
-if(data.success){
-
-location.reload();
-
-}
 
 })
 
@@ -294,6 +294,12 @@ document
 .classList.add(
 "hidden"
 );
+
+if(recargarPagina){
+
+location.reload();
+
+}
 
 }
 
