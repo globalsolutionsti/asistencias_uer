@@ -43,6 +43,8 @@ document.getElementById(
 "empleado"
 );
 
+window.listaEmpleados = data;
+
 data.forEach(emp=>{
 
 const option =
@@ -64,9 +66,43 @@ option
 
 });
 
+combo.addEventListener(
+"change",
+mostrarEmpleado
+);
+
+mostrarEmpleado();
+
 });
 
 }
+
+function mostrarEmpleado(){
+
+const numero =
+document.getElementById(
+"empleado"
+).value;
+
+const empleado =
+window.listaEmpleados.find(
+e => e.numero == numero
+);
+
+if(!empleado) return;
+
+document.getElementById(
+"nombreEmpleado"
+).innerText =
+empleado.nombre;
+
+document.getElementById(
+"uerEmpleado"
+).innerText =
+"UER: " + empleado.uer;
+
+}
+
 
 function previewImagen(e){
 
@@ -157,6 +193,15 @@ evidenciaBase64,
 usuarioRH:
 localStorage.getItem(
 "usuarioRH"
+
+uer:
+document
+.getElementById(
+"uerEmpleado"
+)
+.innerText
+.replace("UER: ",""),
+    
 )
 
 })
