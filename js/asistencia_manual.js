@@ -172,7 +172,7 @@ document
 .replace("UER: ","");
 
 fetch(API_URL,{
-
+mostrarSpinner();
 method:"POST",
 
 headers:{
@@ -229,7 +229,12 @@ localStorage.getItem(
 
 .then(data=>{
 
-alert(
+ocultarSpinner();
+
+mostrarModal(
+data.success
+? "Registro exitoso"
+: "Error",
 data.message
 );
 
@@ -243,10 +248,13 @@ location.reload();
 
 .catch(error=>{
 
+ocultarSpinner();
+
 console.error(error);
 
-alert(
-"Error al guardar la asistencia."
+mostrarModal(
+"Error",
+"No fue posible registrar la asistencia."
 );
 
 });
