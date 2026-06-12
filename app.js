@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbw5bhrJSzGZlMggewr67k3T3Bl_912kfJ0eRcJeCdvHLBNWpSrVRirJ8-YqSOYH3YhaLg/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzdOx2p6R1BdgMiW4YsKhFzh_vn4urEDYASzHb13pG07rAsmzICF97jvvN9QLVf0EZuHw/exec";
 
 let deviceId = localStorage.getItem("deviceId");
 let selfieBase64 = null;
