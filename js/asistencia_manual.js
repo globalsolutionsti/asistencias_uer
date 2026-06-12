@@ -67,3 +67,110 @@ option
 });
 
 }
+
+function previewImagen(e){
+
+const file =
+e.target.files[0];
+
+if(!file) return;
+
+const reader =
+new FileReader();
+
+reader.onload =
+function(evt){
+
+evidenciaBase64 =
+evt.target.result;
+
+const img =
+document.getElementById(
+"preview"
+);
+
+img.src =
+evidenciaBase64;
+
+img.classList.remove(
+"hidden"
+);
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+function guardarAsistencia(){
+
+const empleado =
+document.getElementById(
+"empleado"
+);
+
+const texto =
+empleado.options[
+empleado.selectedIndex
+].text;
+
+const numero =
+empleado.value;
+
+const nombre =
+texto.split(" - ")[1];
+
+fetch(API_URL,{
+
+method:"POST",
+
+headers:{
+"Content-Type":"text/plain"
+},
+
+body:JSON.stringify({
+
+accion:
+"guardarAsistenciaManual",
+
+numero:
+numero,
+
+nombre:
+nombre,
+
+fecha:
+document.getElementById("fecha").value,
+
+hora:
+document.getElementById("hora").value,
+
+tipo:
+document.getElementById("tipo").value,
+
+motivo:
+document.getElementById("motivo").value,
+
+evidencia:
+evidenciaBase64,
+
+usuarioRH:
+localStorage.getItem(
+"usuarioRH"
+)
+
+})
+
+})
+
+.then(r=>r.json())
+
+.then(data=>{
+
+alert(
+data.message
+);
+
+});
+
+}
