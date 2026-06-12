@@ -1,64 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
+<title>IEDEP | Dashboard RH</title>
 
-<title>Dashboard RH</title>
-
-<link rel="stylesheet"
-href="css/dashboard.css">
+<link rel="stylesheet" href="../css/dashboard.css">
 
 </head>
 
 <body>
 
-<header>
+<div class="container">
 
-<h2>
-Portal RH IEDEP
-</h2>
+    <div class="topbar">
 
-</header>
+        <img
+        src="../img/logo.png"
+        class="logo-ieped">
 
-<div class="cards">
+        <div>
 
-<div class="card-menu">
-🕒
-<h3>Asistencia Manual</h3>
+            <h1>Portal RH</h1>
+
+            <p id="usuarioInfo"></p>
+
+        </div>
+
+    </div>
+
+    <div class="dashboard-grid">
+
+        <div class="card-menu"
+             onclick="abrirModulo('../pages/asistencia_manual.html')">
+
+            <div class="icono">📝</div>
+
+            <h3>Asistencia Manual</h3>
+
+            <p>Captura extraordinaria de asistencia</p>
+
+        </div>
+
+        <div class="card-menu"
+             onclick="abrirModulo('../pages/consultas.html')">
+
+            <div class="icono">📊</div>
+
+            <h3>Consultas</h3>
+
+            <p>Consulta y exportación Excel</p>
+
+        </div>
+
+        <div class="card-menu"
+             onclick="abrirModulo('../pages/puntualidad.html')">
+
+            <div class="icono">⏰</div>
+
+            <h3>Puntualidad</h3>
+
+            <p>Retardos y estadísticas</p>
+
+        </div>
+
+        <div class="card-menu"
+             onclick="abrirModulo('../pages/empleados.html')">
+
+            <div class="icono">👥</div>
+
+            <h3>Empleados</h3>
+
+            <p>Consulta de colaboradores</p>
+
+        </div>
+
+        <div class="card-menu"
+             onclick="abrirModulo('../pages/configuracion.html')">
+
+            <div class="icono">⚙️</div>
+
+            <h3>Configuración</h3>
+
+            <p>Parámetros del sistema</p>
+
+        </div>
+
+        <div class="card-menu salir"
+             onclick="cerrarSesion()">
+
+            <div class="icono">🚪</div>
+
+            <h3>Cerrar Sesión</h3>
+
+        </div>
+
+    </div>
+
 </div>
 
-<div class="card-menu">
-📋
-<h3>Consulta Asistencias</h3>
-</div>
-
-<div class="card-menu">
-📊
-<h3>Puntualidad</h3>
-</div>
-
-<div class="card-menu">
-👥
-<h3>Empleados</h3>
-</div>
-
-<div class="card-menu">
-⚙
-<h3>Configuración</h3>
-</div>
-
-<div class="card-menu">
-📑
-<h3>Bitácora RH</h3>
-</div>
-
-</div>
-
-<script src="js/dashboard.js"></script>
+<script src="../js/dashboard.js"></script>
 
 </body>
 </html>
