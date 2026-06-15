@@ -1,1 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IEDEP | Consultas</title>
+
+<link rel="stylesheet" href="../css/consultas.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="header">
+
+            <img
+                src="../img/logo.png"
+                class="logo-ieped">
+
+            <h2>Consulta de Asistencias</h2>
+
+            <p class="subtitulo">
+                Registros Automáticos y Manuales
+            </p>
+
+        </div>
+
+        <div class="filtros">
+
+            <input
+                type="text"
+                id="numero"
+                placeholder="Número de empleado">
+
+            <input
+                type="date"
+                id="fechaInicio">
+
+            <input
+                type="date"
+                id="fechaFin">
+
+            <button onclick="consultar()">
+                Consultar
+            </button>
+
+        </div>
+
+        <div class="acciones">
+
+            <button onclick="exportarExcel()">
+                Exportar Excel
+            </button>
+
+        </div>
+
+        <div class="tabla-container">
+
+            <table id="tablaResultados">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Fecha</th>
+                        <th>Empleado</th>
+                        <th>Nombre</th>
+                        <th>UER</th>
+                        <th>Tipo</th>
+                        <th>Origen</th>
+                        <th>Evidencia</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="../js/consultas.js"></script>
+
+</body>
+
+</html>
