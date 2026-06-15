@@ -240,14 +240,25 @@ button:hover{
     max-width:420px;
     background:#fff;
     border-radius:16px;
-    padding:30px;
+    overflow:hidden;
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,.25);
 }
 
+.modal-header{
+    height:10px;
+    background:var(--vino);
+}
+
+.modal-content{
+    padding:30px;
+}
+
+
 .modal-card h3{
-    color:var(--color-principal);
+    color:var(--vino);
     margin-bottom:15px;
+    font-size:24px;
 }
 
 .modal-card p{
@@ -255,17 +266,18 @@ button:hover{
 }
 
 .modal-card button{
-    background:#7B1E3A; /* mismo color del botón Guardar */
+    background:var(--vino);
     color:white;
     border:none;
     padding:12px 25px;
     border-radius:8px;
     cursor:pointer;
-    font-weight:600;
+    font-weight:700;
     transition:.3s;
 }
 
 .modal-card button:hover{
+    background:var(--vino-hover);
     opacity:.9;
 }
 
