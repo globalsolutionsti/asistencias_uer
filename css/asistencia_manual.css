@@ -306,7 +306,7 @@ button:hover{
     width:60px;
     height:60px;
     border:6px solid #ddd;
-    border-top:6px solid #6a1b9a;
+   border-top:6px solid var(--vino);
     border-radius:50%;
     animation:girar 1s linear infinite;
     margin:auto;
