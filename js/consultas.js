@@ -169,22 +169,34 @@ tbody.appendChild(fila);
 
 function exportarExcel(){
 
-let csv =
+if(!datosConsulta || datosConsulta.length === 0){
 
-"Fecha,Empleado,Nombre,UER,Tipo,Origen\n";
+mostrarModal(
+"Sin información",
+"No hay registros para exportar."
+);
+
+return;
+
+}
+
+let csv =
+"Fecha,Empleado,Nombre,UER,Tipo,Origen,Evidencia\n";
 
 datosConsulta.forEach(r=>{
 
 csv +=
-
-`${r.fecha},${r.numero},${r.nombre},${r.uer},${r.tipo},${r.origen}\n`;
+`"${r.fecha}","${r.numero}","${r.nombre}","${r.uer}","${r.tipo}","${r.origen}","${r.evidencia}"\n`;
 
 });
 
 const blob =
-new Blob([csv],{
-type:"text/csv"
-});
+new Blob(
+["\uFEFF" + csv],
+{
+type:"text/csv;charset=utf-8;"
+}
+);
 
 const link =
 document.createElement("a");
@@ -196,6 +208,11 @@ link.download =
 "Asistencias_IEDEP.csv";
 
 link.click();
+
+mostrarModal(
+"Exportación realizada",
+"El archivo de asistencias fue generado correctamente."
+);
 
 }
 
