@@ -12,10 +12,9 @@ headers:{
 },
 
 body:JSON.stringify({
-
-accion:
-"consultarIncidencias"
-
+  accion:"consultarIncidencias",
+  fechaInicio:document.getElementById("fechaInicio").value,
+  fechaFin:document.getElementById("fechaFin").value
 })
 
 })
