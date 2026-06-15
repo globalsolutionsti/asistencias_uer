@@ -5,24 +5,31 @@ let datosConsulta = [];
 
 function consultar(){
 
+const numero =
+document.getElementById("numero").value.trim();
+
 const fechaInicio =
-document.getElementById(
-"fechaInicio"
-).value;
+document.getElementById("fechaInicio").value;
 
 const fechaFin =
-document.getElementById(
-"fechaFin"
-).value;
+document.getElementById("fechaFin").value;
 
-if(
-!fechaInicio ||
-!fechaFin
-){
+if(!fechaInicio || !fechaFin){
 
 mostrarModal(
 "Información requerida",
 "Seleccione fecha inicial y fecha final."
+);
+
+return;
+
+}
+
+if(fechaFin < fechaInicio){
+
+mostrarModal(
+"Rango inválido",
+"La fecha final no puede ser menor que la fecha inicial."
 );
 
 return;
@@ -46,17 +53,13 @@ headers:{
 
 body:JSON.stringify({
 
-accion:
-"consultarAsistencias",
+accion:"consultarAsistencias",
 
-numero:
-document.getElementById("numero").value.trim(),
+numero:numero,
 
-fechaInicio:
-fechaInicio,
+fechaInicio:fechaInicio,
 
-fechaFin:
-fechaFin
+fechaFin:fechaFin
 
 })
 
@@ -73,15 +76,37 @@ data;
 
 mostrarTabla(data);
 
+if(data.length === 0){
+
+mostrarModal(
+"Sin asistencias",
+"Periodo del " +
+fechaInicio +
+" al " +
+fechaFin +
+" sin asistencias registradas."
+);
+
+}else{
+
+let textoEmpleado =
+numero
+? " para el expediente " + numero
+: "";
+
 mostrarModal(
 "Consulta Realizada",
 "Consulta realizada del periodo " +
 fechaInicio +
-" - " +
+" al " +
 fechaFin +
+textoEmpleado +
 ". Registros encontrados: " +
-data.length
+data.length +
+"."
 );
+
+}
 
 })
 
@@ -93,7 +118,7 @@ console.error("ERROR CONSULTA ASISTENCIAS:", error);
 
 mostrarModal(
 "Error",
-"No fue posible consultar las asistencias. Revisa la consola o ejecuciones de Apps Script."
+"No fue posible consultar las asistencias."
 );
 
 });
