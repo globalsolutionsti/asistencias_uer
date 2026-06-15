@@ -246,7 +246,7 @@ button:hover{
 }
 
 .modal-card h3{
-    color:#6a1b9a;
+    color:var(--color-principal);
     margin-bottom:15px;
 }
 
@@ -255,12 +255,18 @@ button:hover{
 }
 
 .modal-card button{
-    background:#6a1b9a;
+    background:#7B1E3A; /* mismo color del botón Guardar */
     color:white;
     border:none;
     padding:12px 25px;
     border-radius:8px;
     cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.modal-card button:hover{
+    opacity:.9;
 }
 
 /* =========================
