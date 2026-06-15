@@ -49,6 +49,9 @@ body:JSON.stringify({
 accion:
 "consultarAsistencias",
 
+numero:
+document.getElementById("numero").value.trim(),
+
 fechaInicio:
 fechaInicio,
 
