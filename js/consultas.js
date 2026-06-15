@@ -86,11 +86,11 @@ data.length
 
 ocultarSpinner();
 
-console.error(error);
+console.error("ERROR CONSULTA ASISTENCIAS:", error);
 
 mostrarModal(
 "Error",
-"No fue posible consultar las asistencias."
+"No fue posible consultar las asistencias. Revisa la consola o ejecuciones de Apps Script."
 );
 
 });
