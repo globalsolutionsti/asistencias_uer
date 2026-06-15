@@ -5,6 +5,37 @@ let datosConsulta = [];
 
 function consultar(){
 
+const fechaInicio =
+document.getElementById(
+"fechaInicio"
+).value;
+
+const fechaFin =
+document.getElementById(
+"fechaFin"
+).value;
+
+if(
+!fechaInicio ||
+!fechaFin
+){
+
+mostrarModal(
+"Información requerida",
+"Seleccione fecha inicial y fecha final."
+);
+
+return;
+
+}
+
+mostrarSpinner(
+"Consultando Asistencias del Periodo " +
+fechaInicio +
+" - " +
+fechaFin
+);
+
 fetch(API_URL,{
 
 method:"POST",
@@ -15,7 +46,14 @@ headers:{
 
 body:JSON.stringify({
 
-accion:"consultarAsistencias"
+accion:
+"consultarAsistencias",
+
+fechaInicio:
+fechaInicio,
+
+fechaFin:
+fechaFin
 
 })
 
@@ -25,17 +63,35 @@ accion:"consultarAsistencias"
 
 .then(data=>{
 
-datosConsulta = data;
+ocultarSpinner();
+
+datosConsulta =
+data;
 
 mostrarTabla(data);
+
+mostrarModal(
+"Consulta Realizada",
+"Consulta realizada del periodo " +
+fechaInicio +
+" - " +
+fechaFin +
+". Registros encontrados: " +
+data.length
+);
 
 })
 
 .catch(error=>{
 
+ocultarSpinner();
+
 console.error(error);
 
-alert("Error al consultar.");
+mostrarModal(
+"Error",
+"No fue posible consultar las asistencias."
+);
 
 });
 
@@ -112,5 +168,64 @@ link.download =
 "Asistencias_IEDEP.csv";
 
 link.click();
+
+}
+
+function mostrarSpinner(texto){
+
+document
+.getElementById(
+"spinnerTexto"
+).innerText = texto;
+
+document
+.getElementById(
+"spinnerOverlay"
+)
+.classList
+.remove("hidden");
+
+}
+
+function ocultarSpinner(){
+
+document
+.getElementById(
+"spinnerOverlay"
+)
+.classList
+.add("hidden");
+
+}
+
+function mostrarModal(titulo,mensaje){
+
+document
+.getElementById(
+"modalTitulo"
+).innerText = titulo;
+
+document
+.getElementById(
+"modalMensaje"
+).innerText = mensaje;
+
+document
+.getElementById(
+"modalOverlay"
+)
+.classList
+.remove("hidden");
+
+}
+
+function cerrarModal(){
+
+document
+.getElementById(
+"modalOverlay"
+)
+.classList
+.add("hidden");
 
 }
