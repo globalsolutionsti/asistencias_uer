@@ -3,6 +3,25 @@ const API_URL =
 
 function consultarIncidencias(){
 
+const fechaInicio =
+document.getElementById("fechaInicio").value;
+
+const fechaFin =
+document.getElementById("fechaFin").value;
+
+if(!fechaInicio || !fechaFin){
+
+  mostrarModal(
+    "Información requerida",
+    "Seleccione fecha inicial y fecha final."
+  );
+
+  return;
+
+}
+
+mostrarSpinner();
+
 fetch(API_URL,{
 
 method:"POST",
@@ -13,8 +32,8 @@ headers:{
 
 body:JSON.stringify({
   accion:"consultarIncidencias",
-  fechaInicio:document.getElementById("fechaInicio").value,
-  fechaFin:document.getElementById("fechaFin").value
+  fechaInicio:fechaInicio,
+  fechaFin:fechaFin
 })
 
 })
@@ -23,16 +42,37 @@ body:JSON.stringify({
 
 .then(data=>{
 
+ocultarSpinner();
+
 mostrarTabla(data);
+
+if(data.length > 0){
+
+  mostrarModal(
+    "Incidencias generadas",
+    "Se encontraron " + data.length + " incidencias en el periodo seleccionado."
+  );
+
+}else{
+
+  mostrarModal(
+    "Sin incidencias",
+    "Periodo del " + fechaInicio + " al " + fechaFin + " sin incidencias."
+  );
+
+}
 
 })
 
 .catch(error=>{
 
+ocultarSpinner();
+
 console.error(error);
 
-alert(
-"Error al consultar incidencias"
+mostrarModal(
+  "Error",
+  "No fue posible consultar las incidencias."
 );
 
 });
@@ -85,4 +125,23 @@ document
 )
 .innerHTML = html;
 
+}
+
+
+function mostrarSpinner(){
+  document.getElementById("spinnerOverlay").classList.remove("hidden");
+}
+
+function ocultarSpinner(){
+  document.getElementById("spinnerOverlay").classList.add("hidden");
+}
+
+function mostrarModal(titulo,mensaje){
+  document.getElementById("modalTitulo").innerText = titulo;
+  document.getElementById("modalMensaje").innerText = mensaje;
+  document.getElementById("modalOverlay").classList.remove("hidden");
+}
+
+function cerrarModal(){
+  document.getElementById("modalOverlay").classList.add("hidden");
 }
