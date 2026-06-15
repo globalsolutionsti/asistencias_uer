@@ -1,5 +1,5 @@
 const API_URL =
-"https://script.google.com/macros/s/AKfycbxnZjHOJ9lPyW_GOqkFXZsF6XxWLgDWPK5yE3upCBfKRSnHXkuMdXo4BFdYgBD7wiCh/exec";
+"https://script.google.com/macros/s/AKfycbzr8VMXRjZQWGYgUsWP9qTT8BrxIh610Wv-GjXp6NyKk8Sy4lN4kyWR864EDXjzHwkBKw/exec";
 
 function login(){
 
