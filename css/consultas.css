@@ -269,3 +269,28 @@ border-bottom:
 .badge-puntualidad.gris .punto{
     background:#999;
 }
+
+.badge-incidencia{
+    display:inline-flex;
+    align-items:center;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.badge-incidencia.rojo{
+    background:#FFEBEE;
+    color:#C62828;
+}
+
+.badge-incidencia.amarillo{
+    background:#FFF8E1;
+    color:#B28704;
+}
+
+.badge-incidencia.gris{
+    background:#F1F1F1;
+    color:#777;
+}
