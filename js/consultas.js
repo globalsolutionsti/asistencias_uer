@@ -194,12 +194,18 @@ return;
 }
 
 let csv =
-"Fecha,Empleado,Nombre,UER,Tipo,Origen,Evidencia\n";
+"Fecha,Empleado,Nombre,UER,Tipo,Origen,Evidencia,Puntualidad\n";
 
 datosConsulta.forEach(r=>{
 
+const puntualidad =
+obtenerPuntualidadConsulta(
+r.fecha,
+r.tipo
+);
+
 csv +=
-`"${r.fecha}","${r.numero}","${r.nombre}","${r.uer}","${r.tipo}","${r.origen}","${r.evidencia}"\n`;
+`"${r.fecha}","${r.numero}","${r.nombre}","${r.uer}","${r.tipo}","${r.origen}","${r.evidencia}","${puntualidad.texto}"\n`;
 
 });
 
@@ -285,6 +291,73 @@ document
 )
 .classList
 .add("hidden");
+
+}
+
+
+function obtenerPuntualidadConsulta(fecha,tipo){
+
+if(
+tipo &&
+tipo.toString().trim().toUpperCase() === "SALIDA"
+){
+
+return {
+texto:"No aplica",
+clase:"gris"
+};
+
+}
+
+const partes =
+fecha.split(" ");
+
+if(partes.length < 2){
+
+return {
+texto:"No aplica",
+clase:"gris"
+};
+
+}
+
+const hora =
+partes[1];
+
+if(hora <= "09:14"){
+
+return {
+texto:"OK",
+clase:"verde"
+};
+
+}
+
+if(
+hora >= "09:15" &&
+hora <= "09:29"
+){
+
+return {
+texto:"Retardo Menor",
+clase:"amarillo"
+};
+
+}
+
+if(hora >= "09:30"){
+
+return {
+texto:"Retardo Mayor",
+clase:"rojo"
+};
+
+}
+
+return {
+texto:"No aplica",
+clase:"gris"
+};
 
 }
 
