@@ -151,6 +151,7 @@ document.createElement("tr");
 
 fila.innerHTML = `
 
+<td>${reg.fecha}</td>
 <td>${reg.entrada || ""}</td>
 <td>${reg.salida || ""}</td>
 <td>${reg.numero}</td>
