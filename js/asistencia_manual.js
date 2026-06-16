@@ -354,77 +354,28 @@ function extraerFechaHoraExif(file){
 
 EXIF.getData(file,function(){
 
+const todos =
+EXIF.getAllTags(this);
+
+console.log("METADATOS EXIF:", todos);
+
 const fechaExif =
-EXIF.getTag(this,"DateTimeOriginal") ||
-EXIF.getTag(this,"DateTimeDigitized") ||
-EXIF.getTag(this,"DateTime");
+todos.DateTimeOriginal ||
+todos.DateTimeDigitized ||
+todos.DateTime;
 
 if(!fechaExif){
 
 mostrarModal(
 "Metadatos no detectados",
-"No se encontró fecha y hora en la evidencia fotográfica. Capture la fecha y hora manualmente."
+"No se encontró fecha y hora EXIF en esta imagen."
 );
 
 return;
 
 }
 
-const partes =
-fechaExif.split(" ");
-
-if(partes.length < 2){
-
-mostrarModal(
-"Metadatos inválidos",
-"La evidencia contiene una fecha no reconocida. Capture la fecha y hora manualmente."
-);
-
-return;
-
-}
-
-const fechaPartes =
-partes[0].split(":");
-
-const horaPartes =
-partes[1].split(":");
-
-const fechaISO =
-fechaPartes[0] + "-" +
-fechaPartes[1] + "-" +
-fechaPartes[2];
-
-const hora =
-horaPartes[0] + ":" +
-horaPartes[1];
-
-document.getElementById("fecha").value =
-fechaISO;
-
-document.getElementById("hora").value =
-hora;
-
-if(parseInt(horaPartes[0]) < 12){
-
-document.getElementById("tipo").value =
-"ENTRADA";
-
-}else{
-
-document.getElementById("tipo").value =
-"SALIDA";
-
-}
-
-mostrarModal(
-"Datos detectados",
-"Se detectó automáticamente la fecha " +
-fechaISO +
-" y hora " +
-hora +
-" desde la evidencia."
-);
+console.log("FECHA EXIF DETECTADA:", fechaExif);
 
 });
 
