@@ -117,7 +117,16 @@ function previewImagen(e){
 const file =
 e.target.files[0];
 
-if(!file) return;
+if(!file){
+
+mostrarModal(
+"Archivo requerido",
+"No se seleccionó ninguna imagen."
+);
+
+return;
+
+}
 
 const reader =
 new FileReader();
@@ -139,6 +148,19 @@ evidenciaBase64;
 img.classList.remove(
 "hidden"
 );
+
+if(typeof EXIF === "undefined"){
+
+mostrarModal(
+"Error de lectura",
+"No se pudo cargar la librería para leer metadatos de la imagen."
+);
+
+return;
+
+}
+
+extraerFechaHoraExif(file);
 
 };
 
@@ -334,6 +356,7 @@ EXIF.getData(file,function(){
 
 const fechaExif =
 EXIF.getTag(this,"DateTimeOriginal") ||
+EXIF.getTag(this,"DateTimeDigitized") ||
 EXIF.getTag(this,"DateTime");
 
 if(!fechaExif){
@@ -368,41 +391,29 @@ const horaPartes =
 partes[1].split(":");
 
 const fechaISO =
-fechaPartes[0] +
-"-" +
-fechaPartes[1] +
-"-" +
+fechaPartes[0] + "-" +
+fechaPartes[1] + "-" +
 fechaPartes[2];
 
 const hora =
-horaPartes[0] +
-":" +
+horaPartes[0] + ":" +
 horaPartes[1];
 
-document
-.getElementById("fecha")
-.value = fechaISO;
+document.getElementById("fecha").value =
+fechaISO;
 
-document
-.getElementById("hora")
-.value = hora;
+document.getElementById("hora").value =
+hora;
 
-const horaNumero =
-parseInt(
-horaPartes[0]
-);
+if(parseInt(horaPartes[0]) < 12){
 
-if(horaNumero < 12){
-
-document
-.getElementById("tipo")
-.value = "ENTRADA";
+document.getElementById("tipo").value =
+"ENTRADA";
 
 }else{
 
-document
-.getElementById("tipo")
-.value = "SALIDA";
+document.getElementById("tipo").value =
+"SALIDA";
 
 }
 
@@ -412,7 +423,7 @@ mostrarModal(
 fechaISO +
 " y hora " +
 hora +
-"."
+" desde la evidencia."
 );
 
 });
