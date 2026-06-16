@@ -274,3 +274,70 @@ document
 .add("hidden");
 
 }
+
+
+function obtenerPuntualidadConsulta(fecha,tipo){
+
+if(
+tipo &&
+tipo.toString().trim().toUpperCase() === "SALIDA"
+){
+
+return {
+texto:"No aplica",
+clase:"gris"
+};
+
+}
+
+const partes =
+fecha.split(" ");
+
+if(partes.length < 2){
+
+return {
+texto:"No aplica",
+clase:"gris"
+};
+
+}
+
+const hora =
+partes[1];
+
+if(hora <= "09:14"){
+
+return {
+texto:"OK",
+clase:"verde"
+};
+
+}
+
+if(
+hora >= "09:15" &&
+hora <= "09:29"
+){
+
+return {
+texto:"Retardo Menor",
+clase:"amarillo"
+};
+
+}
+
+if(hora >= "09:30"){
+
+return {
+texto:"Retardo Mayor",
+clase:"rojo"
+};
+
+}
+
+return {
+texto:"No aplica",
+clase:"gris"
+};
+
+}
