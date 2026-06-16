@@ -1,3 +1,4 @@
+const API_URL =
 CONFIG.API_URL;
 
 function consultarIncidencias(){
