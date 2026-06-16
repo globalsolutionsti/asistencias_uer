@@ -136,6 +136,12 @@ tbody.innerHTML = "";
 
 datos.forEach(reg=>{
 
+const puntualidad =
+obtenerPuntualidadConsulta(
+reg.fecha,
+reg.tipo
+);
+
 const fila =
 document.createElement("tr");
 
@@ -157,6 +163,13 @@ Ver
 
 </a>
 
+</td>
+
+<td>
+  <span class="badge-puntualidad ${puntualidad.clase}">
+    <span class="punto"></span>
+    ${puntualidad.texto}
+  </span>
 </td>
 
 `;
