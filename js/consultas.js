@@ -53,7 +53,7 @@ headers:{
 
 body:JSON.stringify({
 
-accion:"consultarAsistencias",
+accion:"consultarReporteRH",
 
 numero:numero,
 
