@@ -327,3 +327,94 @@ document
 );
 
 }
+
+function extraerFechaHoraExif(file){
+
+EXIF.getData(file,function(){
+
+const fechaExif =
+EXIF.getTag(this,"DateTimeOriginal") ||
+EXIF.getTag(this,"DateTime");
+
+if(!fechaExif){
+
+mostrarModal(
+"Metadatos no detectados",
+"No se encontró fecha y hora en la evidencia fotográfica. Capture la fecha y hora manualmente."
+);
+
+return;
+
+}
+
+const partes =
+fechaExif.split(" ");
+
+if(partes.length < 2){
+
+mostrarModal(
+"Metadatos inválidos",
+"La evidencia contiene una fecha no reconocida. Capture la fecha y hora manualmente."
+);
+
+return;
+
+}
+
+const fechaPartes =
+partes[0].split(":");
+
+const horaPartes =
+partes[1].split(":");
+
+const fechaISO =
+fechaPartes[0] +
+"-" +
+fechaPartes[1] +
+"-" +
+fechaPartes[2];
+
+const hora =
+horaPartes[0] +
+":" +
+horaPartes[1];
+
+document
+.getElementById("fecha")
+.value = fechaISO;
+
+document
+.getElementById("hora")
+.value = hora;
+
+const horaNumero =
+parseInt(
+horaPartes[0]
+);
+
+if(horaNumero < 12){
+
+document
+.getElementById("tipo")
+.value = "ENTRADA";
+
+}else{
+
+document
+.getElementById("tipo")
+.value = "SALIDA";
+
+}
+
+mostrarModal(
+"Datos detectados",
+"Se detectó automáticamente la fecha " +
+fechaISO +
+" y hora " +
+hora +
+"."
+);
+
+});
+
+}
