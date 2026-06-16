@@ -137,9 +137,13 @@ tbody.innerHTML = "";
 datos.forEach(reg=>{
 
 const puntualidad =
-obtenerPuntualidadConsulta(
-reg.fecha,
-reg.tipo
+obtenerClasePuntualidadRH(
+reg.puntualidad
+);
+
+const incidencia =
+obtenerClaseIncidenciaRH(
+reg.incidencia
 );
 
 const fila =
@@ -147,23 +151,13 @@ document.createElement("tr");
 
 fila.innerHTML = `
 
-<td>${reg.fecha}</td>
+<td>${reg.entrada || ""}</td>
+<td>${reg.salida || ""}</td>
 <td>${reg.numero}</td>
 <td>${reg.nombre}</td>
 <td>${reg.uer}</td>
-<td>${reg.tipo}</td>
-<td>${reg.origen}</td>
-
-<td>
-
-<a href="${reg.evidencia}"
-target="_blank">
-
-Ver
-
-</a>
-
-</td>
+<td>${reg.origenEntrada || ""}</td>
+<td>${reg.origenSalida || ""}</td>
 
 <td>
   <span class="badge-puntualidad ${puntualidad.clase}">
@@ -171,6 +165,14 @@ Ver
     ${puntualidad.texto}
   </span>
 </td>
+
+<td>
+  <span class="badge-incidencia ${incidencia.clase}">
+    ${incidencia.texto}
+  </span>
+</td>
+
+<td>${reg.detalle || ""}</td>
 
 `;
 
@@ -423,6 +425,66 @@ clase:"rojo"
 
 return {
 texto:"No aplica",
+clase:"gris"
+};
+
+}
+
+function obtenerClasePuntualidadRH(valor){
+
+if(!valor || valor === "OK"){
+return {
+texto:"OK",
+clase:"verde"
+};
+}
+
+if(valor === "RETARDO MENOR"){
+return {
+texto:"Retardo Menor",
+clase:"amarillo"
+};
+}
+
+if(valor === "RETARDO MAYOR"){
+return {
+texto:"Retardo Mayor",
+clase:"rojo"
+};
+}
+
+return {
+texto:valor,
+clase:"gris"
+};
+
+}
+
+function obtenerClaseIncidenciaRH(valor){
+
+if(!valor){
+return {
+texto:"",
+clase:"gris"
+};
+}
+
+if(valor === "FALTA COMPLETA"){
+return {
+texto:"FALTA COMPLETA",
+clase:"rojo"
+};
+}
+
+if(valor === "FALTA SALIDA" || valor === "FALTA ENTRADA"){
+return {
+texto:valor,
+clase:"amarillo"
+};
+}
+
+return {
+texto:valor,
 clase:"gris"
 };
 
