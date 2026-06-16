@@ -215,3 +215,57 @@ border-bottom:
 .hidden{
     display:none !important;
 }
+
+.badge-puntualidad{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:700;
+    white-space:nowrap;
+}
+
+.badge-puntualidad .punto{
+    width:10px;
+    height:10px;
+    border-radius:50%;
+    display:inline-block;
+}
+
+.badge-puntualidad.verde{
+    background:#E8F5E9;
+    color:#2E7D32;
+}
+
+.badge-puntualidad.verde .punto{
+    background:#2E7D32;
+}
+
+.badge-puntualidad.amarillo{
+    background:#FFF8E1;
+    color:#B28704;
+}
+
+.badge-puntualidad.amarillo .punto{
+    background:#FBC02D;
+}
+
+.badge-puntualidad.rojo{
+    background:#FFEBEE;
+    color:#C62828;
+}
+
+.badge-puntualidad.rojo .punto{
+    background:#C62828;
+}
+
+.badge-puntualidad.gris{
+    background:#F1F1F1;
+    color:#777;
+}
+
+.badge-puntualidad.gris .punto{
+    background:#999;
+}
