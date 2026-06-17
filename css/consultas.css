@@ -24,14 +24,15 @@ margin:auto;
 
 .card{
 
-background:white;
+    background:white;
 
-padding:25px;
+    border-top:8px solid #6D1028;
 
-border-radius:18px;
+    border-radius:18px;
 
-box-shadow:
-0 10px 30px rgba(0,0,0,.12);
+    padding:30px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
 
 }
 
@@ -295,18 +296,6 @@ border-bottom:
     color:#777;
 }
 
-/* ==========================
-   BARRA INSTITUCIONAL IEDEP
-========================== */
 
-.top-bar{
 
-    height:8px;
 
-    background:#6D1028;
-
-    border-radius:12px 12px 0 0;
-
-    margin:-30px -30px 20px -30px;
-
-}
