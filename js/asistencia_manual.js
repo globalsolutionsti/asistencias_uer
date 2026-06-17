@@ -149,6 +149,8 @@ img.classList.remove(
 "hidden"
 );
 
+procesarFechaHoraEvidencia(file);
+
 if(typeof EXIF === "undefined"){
 
 mostrarModal(
@@ -296,7 +298,7 @@ document
 document
 .getElementById(
 "modalMensaje"
-).innerText = mensaje;
+).innerHTML  = mensaje;
 
 document
 .getElementById(
@@ -456,6 +458,217 @@ fechaISO +
 " y hora " +
 hora +
 " desde la evidencia."
+);
+
+});
+
+}
+
+function procesarFechaHoraEvidencia(file){
+
+if(typeof EXIF !== "undefined"){
+
+EXIF.getData(file,function(){
+
+const todos =
+EXIF.getAllTags(this);
+
+const fechaExif =
+todos.DateTimeOriginal ||
+todos.DateTimeDigitized ||
+todos.DateTime ||
+todos.CreateDate ||
+todos.ModifyDate;
+
+if(fechaExif){
+
+aplicarFechaHoraDetectada(
+fechaExif,
+"EXIF"
+);
+
+return;
+
+}
+
+leerMarcaAguaOCR(file);
+
+});
+
+}else{
+
+leerMarcaAguaOCR(file);
+
+}
+
+}
+
+function aplicarFechaHoraDetectada(valor,origen){
+
+let fechaISO = "";
+let hora = "";
+
+if(valor.includes("/")){
+
+const partes =
+valor.split(" ");
+
+if(partes.length < 2){
+return;
+}
+
+const fechaPartes =
+partes[0].split("/");
+
+const horaPartes =
+partes[1].split(":");
+
+fechaISO =
+fechaPartes[2] +
+"-" +
+fechaPartes[1] +
+"-" +
+fechaPartes[0];
+
+hora =
+horaPartes[0] +
+":" +
+horaPartes[1];
+
+}else{
+
+const partes =
+valor.split(" ");
+
+if(partes.length < 2){
+return;
+}
+
+const fechaPartes =
+partes[0].split(":");
+
+const horaPartes =
+partes[1].split(":");
+
+fechaISO =
+fechaPartes[0] +
+"-" +
+fechaPartes[1] +
+"-" +
+fechaPartes[2];
+
+hora =
+horaPartes[0] +
+":" +
+horaPartes[1];
+
+}
+
+document.getElementById("fecha").value =
+fechaISO;
+
+document.getElementById("hora").value =
+hora;
+
+const horaNumero =
+parseInt(
+hora.split(":")[0]
+);
+
+document.getElementById("tipo").value =
+horaNumero < 12
+? "ENTRADA"
+: "SALIDA";
+
+mostrarModal(
+"Fecha y hora detectadas",
+"Origen: " +
+origen +
+"<br>Fecha: " +
+fechaISO +
+"<br>Hora: " +
+hora +
+"<br>Tipo sugerido: " +
+document.getElementById("tipo").value
+);
+
+}
+
+
+function leerMarcaAguaOCR(file){
+
+if(typeof Tesseract === "undefined"){
+
+mostrarModal(
+"OCR no disponible",
+"No fue posible cargar el lector de marca de agua. Capture fecha y hora manualmente."
+);
+
+return;
+
+}
+
+mostrarSpinner(
+"Leyendo fecha y hora de la evidencia..."
+);
+
+Tesseract.recognize(
+file,
+"eng"
+)
+
+.then(({ data:{ text } })=>{
+
+ocultarSpinner();
+
+console.log(
+"TEXTO OCR DETECTADO:",
+text
+);
+
+const patron =
+/(\d{2}[\/\-]\d{2}[\/\-]\d{4})\s+(\d{2}:\d{2})/;
+
+const encontrado =
+text.match(
+patron
+);
+
+if(!encontrado){
+
+mostrarModal(
+"Fecha no detectada",
+"No fue posible detectar fecha y hora en la marca de agua. Capture fecha y hora manualmente."
+);
+
+return;
+
+}
+
+const valor =
+encontrado[1] +
+" " +
+encontrado[2];
+
+aplicarFechaHoraDetectada(
+valor,
+"OCR"
+);
+
+})
+
+.catch(error=>{
+
+ocultarSpinner();
+
+console.error(
+"ERROR OCR:",
+error
+);
+
+mostrarModal(
+"Error OCR",
+"No fue posible leer la marca de agua. Capture fecha y hora manualmente."
 );
 
 });
