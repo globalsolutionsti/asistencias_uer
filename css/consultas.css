@@ -23,17 +23,11 @@ margin:auto;
 }
 
 .card{
-
     background:white;
-
-    border-top:8px solid #6D1028;
-
+    border-top:8px solid var(--vino);
     border-radius:18px;
-
     padding:30px;
-
     box-shadow:0 15px 40px rgba(0,0,0,.12);
-
 }
 
 .header{
