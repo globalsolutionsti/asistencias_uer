@@ -594,7 +594,6 @@ document.getElementById("tipo").value
 
 }
 
-
 function leerMarcaAguaOCR(file){
 
 if(typeof Tesseract === "undefined"){
@@ -612,8 +611,66 @@ mostrarSpinner(
 "Leyendo fecha y hora de la evidencia..."
 );
 
+const img =
+new Image();
+
+img.onload =
+function(){
+
+const canvas =
+document.createElement("canvas");
+
+const ctx =
+canvas.getContext("2d");
+
+const ancho =
+img.width;
+
+const alto =
+img.height;
+
+/*
+  Recortamos el 20% inferior,
+  donde normalmente está la marca de agua.
+*/
+
+const recorteAlto =
+Math.floor(
+alto * 0.22
+);
+
+const recorteY =
+alto - recorteAlto;
+
+canvas.width =
+ancho;
+
+canvas.height =
+recorteAlto;
+
+ctx.drawImage(
+img,
+0,
+recorteY,
+ancho,
+recorteAlto,
+0,
+0,
+ancho,
+recorteAlto
+);
+
+/*
+  Convertimos el recorte a imagen temporal
+*/
+
+const imagenRecortada =
+canvas.toDataURL(
+"image/png"
+);
+
 Tesseract.recognize(
-file,
+imagenRecortada,
 "eng"
 )
 
@@ -622,7 +679,7 @@ file,
 ocultarSpinner();
 
 console.log(
-"TEXTO OCR DETECTADO:",
+"TEXTO OCR RECORTE:",
 text
 );
 
@@ -672,5 +729,10 @@ mostrarModal(
 );
 
 });
+
+};
+
+img.src =
+URL.createObjectURL(file);
 
 }
