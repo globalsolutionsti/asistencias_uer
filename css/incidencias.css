@@ -15,9 +15,10 @@ body{
 
 .card{
     background:white;
-    padding:25px;
-    border-radius:15px;
-    box-shadow:0 5px 20px rgba(0,0,0,.1);
+    border-top:8px solid var(--vino);
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
 }
 
 h2{
