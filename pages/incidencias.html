@@ -8,7 +8,7 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
 
-<title>Incidencias RH</title>
+<title>IEDEP | Incidencias RH</title>
 
 <link rel="stylesheet"
 href="../css/incidencias.css">
@@ -21,9 +21,38 @@ href="../css/incidencias.css">
 
     <div class="card">
 
-        <h2>
-            Incidencias RH
-        </h2>
+        <!-- Línea Institucional -->
+        <div class="top-bar"></div>
+
+        <div class="header">
+
+            <img
+            src="../img/logo.png"
+            class="logo-ieped">
+
+            <div class="contenedor-regresar">
+
+                <button
+                class="btn-dashboard"
+                onclick="window.location.href='../dashboard.html'">
+
+                    🏠 Dashboard
+
+                </button>
+
+            </div>
+
+            <h2>
+                Incidencias RH
+            </h2>
+
+            <p class="subtitulo">
+
+                Faltas completas, entradas y salidas pendientes
+
+            </p>
+
+        </div>
 
         <div class="filtros">
 
@@ -55,7 +84,9 @@ href="../css/incidencias.css">
 <div id="spinnerOverlay" class="spinner-overlay hidden">
     <div class="spinner-card">
         <div class="spinner"></div>
-        <p>Generando incidencias...</p>
+        <p id="spinnerTexto">
+            Generando incidencias...
+        </p>
     </div>
 </div>
 
@@ -70,7 +101,7 @@ href="../css/incidencias.css">
     </div>
 </div>
 
-<script src="../js/config.js"></script>      
+<script src="../js/config.js"></script>
 <script src="../js/incidencias.js"></script>
 
 </body>
