@@ -630,48 +630,98 @@ const alto =
 img.height;
 
 /*
-  Recortamos el 20% inferior,
-  donde normalmente está la marca de agua.
+  Recorte específico:
+  parte inferior derecha donde normalmente aparece la fecha.
 */
 
-const recorteAlto =
-Math.floor(
-alto * 0.22
-);
+const recorteX =
+Math.floor(ancho * 0.45);
 
 const recorteY =
-alto - recorteAlto;
+Math.floor(alto * 0.82);
+
+const recorteAncho =
+Math.floor(ancho * 0.55);
+
+const recorteAlto =
+Math.floor(alto * 0.18);
+
+/*
+  Escalamos 3x para mejorar OCR
+*/
 
 canvas.width =
-ancho;
+recorteAncho * 3;
 
 canvas.height =
-recorteAlto;
+recorteAlto * 3;
 
 ctx.drawImage(
 img,
-0,
+recorteX,
 recorteY,
-ancho,
+recorteAncho,
 recorteAlto,
 0,
 0,
-ancho,
-recorteAlto
+canvas.width,
+canvas.height
 );
 
 /*
-  Convertimos el recorte a imagen temporal
+  Mejorar contraste
 */
+
+const imageData =
+ctx.getImageData(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+const data =
+imageData.data;
+
+for(let i=0;i<data.length;i+=4){
+
+const promedio =
+(data[i] + data[i+1] + data[i+2]) / 3;
+
+const valor =
+promedio > 150
+? 255
+: 0;
+
+data[i] = valor;
+data[i+1] = valor;
+data[i+2] = valor;
+
+}
+
+ctx.putImageData(
+imageData,
+0,
+0
+);
 
 const imagenRecortada =
 canvas.toDataURL(
 "image/png"
 );
 
+console.log(
+"RECORTE OCR:",
+imagenRecortada
+);
+
 Tesseract.recognize(
 imagenRecortada,
-"eng"
+"eng",
+{
+  tessedit_char_whitelist:
+  "0123456789/: -"
+}
 )
 
 .then(({ data:{ text } })=>{
@@ -679,7 +729,7 @@ imagenRecortada,
 ocultarSpinner();
 
 console.log(
-"TEXTO OCR RECORTE:",
+"TEXTO OCR FECHA:",
 text
 );
 
