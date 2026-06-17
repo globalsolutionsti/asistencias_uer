@@ -433,25 +433,54 @@ clase:"gris"
 
 function obtenerClasePuntualidadRH(valor){
 
-if(!valor || valor === "OK"){
+valor =
+valor
+? valor.toString().trim()
+: "";
+
+if(valor === ""){
+
+return {
+texto:"",
+clase:"gris"
+};
+
+}
+
+if(valor === "OK"){
+
 return {
 texto:"OK",
 clase:"verde"
 };
+
 }
 
 if(valor === "RETARDO MENOR"){
+
 return {
-texto:"Retardo Menor",
+texto:"RETARDO MENOR",
 clase:"amarillo"
 };
+
 }
 
 if(valor === "RETARDO MAYOR"){
+
 return {
 texto:"Retardo Mayor",
 clase:"rojo"
 };
+
+}
+
+if(valor === "SIN HORARIO"){
+
+return {
+texto:"SIN HORARIO",
+clase:"gris"
+};
+
 }
 
 return {
