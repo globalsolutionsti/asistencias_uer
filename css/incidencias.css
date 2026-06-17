@@ -140,3 +140,78 @@ th,td{
 .hidden{
     display:none !important;
 }
+
+/* ==========================
+   CABECERA INSTITUCIONAL
+========================== */
+
+.top-bar{
+
+    height:8px;
+    background:#6D1028;
+    border-radius:10px 10px 0 0;
+    margin:-30px -30px 20px -30px;
+
+}
+
+.header{
+
+    text-align:center;
+    margin-bottom:25px;
+
+}
+
+.logo-ieped{
+
+    width:180px;
+    margin-bottom:10px;
+
+}
+
+.header h2{
+
+    color:#6D1028;
+    margin-bottom:10px;
+
+}
+
+.subtitulo{
+
+    color:#D49A4A;
+    font-size:18px;
+    margin-top:5px;
+
+}
+
+/* ==========================
+   BOTON DASHBOARD
+========================== */
+
+.contenedor-regresar{
+
+    display:flex;
+    justify-content:center;
+    margin:15px 0;
+
+}
+
+.btn-dashboard{
+
+    background:#6D1028;
+    color:#FFF;
+    border:none;
+    border-radius:10px;
+    padding:10px 18px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.btn-dashboard:hover{
+
+    background:#8A1635;
+    transform:translateY(-2px);
+
+}
