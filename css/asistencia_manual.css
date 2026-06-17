@@ -324,3 +324,44 @@ button:hover{
 .hidden{
     display:none !important;
 }
+
+
+/* ==========================
+   BOTON DASHBOARD
+========================== */
+
+.contenedor-regresar{
+
+    width:100%;
+    display:flex;
+    justify-content:flex-start;
+    margin-bottom:20px;
+
+}
+
+.btn-dashboard{
+
+    background:#6D1028;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px 20px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.btn-dashboard:hover{
+
+    background:#8E1A38;
+    transform:translateY(-2px);
+
+}
+
+.btn-dashboard:active{
+
+    transform:scale(.98);
+
+}
